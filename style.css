@@ -1,0 +1,18 @@
+:root{--green:#2a7f62;--bg:#f7f7f7}
+*{box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--bg);color:#222}
+header{background:var(--green);color:#fff;padding:18px;text-align:center}
+main{max-width:900px;margin:16px auto;padding:12px}
+h2{margin-top:0}
+#actions{display:flex;gap:10px;justify-content:center;margin:10px 0}
+button{padding:10px 14px;border:0;border-radius:6px;background:#2a7f62;color:#fff;cursor:pointer}
+button.secondary{background:#666}
+.hidden{display:none}
+form{display:grid;gap:8px;max-width:600px;margin:0 auto}
+label{display:flex;flex-direction:column;text-align:left}
+input,select{padding:8px;border-radius:6px;border:1px solid #ccc}
+#list-container{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.eglise-card{background:#fff;padding:10px;border-radius:8px;border:1px solid #e1e1e1}
+.ad-placeholder{height:90px;background:#fff;border:1px dashed #ccc;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#888}
+.note{font-size:0.9em;color:#666}
+footer{padding:12px;text-align:center;color:#666}
