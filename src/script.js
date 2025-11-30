@@ -1,10 +1,8 @@
-// src/script.js
-
-// Import des modules Firebase depuis le CDN
+// Import des modules Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-// Configuration Firebase : remplace les valeurs par celles de ton projet
+// Configuration Firebase (remplace avec tes infos)
 const firebaseConfig = {
   apiKey: "AIzaSyCGvvammRCYbpqtEE_gJuHDCKpAHvk7DuY",
   authDomain: "eglise-chretienne-a-proximite.firebaseapp.com",
@@ -18,37 +16,39 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-console.log("Firebase initialisé !");
+// Afficher un verset du jour aléatoire
+const versets = [
+    "Jean 3:16 - Car Dieu a tant aimé le monde...",
+    "Psaume 23:1 - L'Éternel est mon berger, je ne manquerai de rien...",
+    "Philippiens 4:13 - Je puis tout par celui qui me fortifie..."
+];
 
-// Fonction pour récupérer les églises depuis Firestore
+const versetElement = document.getElementById("verset");
+versetElement.textContent = versets[Math.floor(Math.random() * versets.length)];
+
+// Fonction pour récupérer les églises depuis Firebase
 async function fetchEglises() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "eglises")); // collection "eglises"
-    const listeContainer = document.getElementById("liste-eglises");
+    try {
+        const querySnapshot = await getDocs(collection(db, "eglises"));
+        const listeContainer = document.getElementById("liste-eglises");
+        listeContainer.innerHTML = "<h2>Liste des églises</h2>";
 
-    // On vide la section au cas où
-    listeContainer.innerHTML = "<h2>Liste des églises</h2>";
+        if (querySnapshot.empty) {
+            listeContainer.innerHTML += "<p>Aucune église enregistrée pour l’instant.</p>";
+        }
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const div = document.createElement("div");
-      div.innerHTML = `<strong>${data.nom}</strong><br>${data.adresse}`;
-      div.style.border = "1px solid #ccc";
-      div.style.padding = "10px";
-      div.style.margin = "5px";
-      listeContainer.appendChild(div);
-    });
-
-    if (querySnapshot.empty) {
-      listeContainer.innerHTML += "<p>Aucune église enregistrée pour l’instant.</p>";
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const div = document.createElement("div");
+            div.innerHTML = `<strong>${data.nom}</strong><br>${data.adresse}`;
+            listeContainer.appendChild(div);
+        });
+    } catch (error) {
+        console.error("Erreur récupération églises :", error);
+        const listeContainer = document.getElementById("liste-eglises");
+        listeContainer.innerHTML += "<p>Impossible de récupérer les églises.</p>";
     }
-
-  } catch (error) {
-    console.error("Erreur récupération églises :", error);
-    const listeContainer = document.getElementById("liste-eglises");
-    listeContainer.innerHTML += "<p>Impossible de récupérer les églises.</p>";
-  }
 }
 
-// Appel de la fonction pour afficher les églises dès le chargement
+// Charger les églises au démarrage
 fetchEglises();
