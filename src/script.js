@@ -1,8 +1,7 @@
-// Import des modules Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-// Configuration Firebase (remplace avec tes infos)
+// Configuration Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCGvvammRCYbpqtEE_gJuHDCKpAHvk7DuY",
   authDomain: "eglise-chretienne-a-proximite.firebaseapp.com",
@@ -16,33 +15,39 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Afficher un verset du jour aléatoire
+// Verset du jour aléatoire
 const versets = [
     "Jean 3:16 - Car Dieu a tant aimé le monde...",
     "Psaume 23:1 - L'Éternel est mon berger, je ne manquerai de rien...",
     "Philippiens 4:13 - Je puis tout par celui qui me fortifie..."
 ];
 
-const versetElement = document.getElementById("verset");
-versetElement.textContent = versets[Math.floor(Math.random() * versets.length)];
+document.getElementById("verset").textContent =
+    versets[Math.floor(Math.random() * versets.length)];
 
-// Fonction pour récupérer les églises depuis Firebase
+// Fonction pour récupérer les églises pentecôtistes
 async function fetchEglises() {
     try {
         const querySnapshot = await getDocs(collection(db, "eglises"));
         const listeContainer = document.getElementById("liste-eglises");
         listeContainer.innerHTML = "<h2>Liste des églises</h2>";
 
-        if (querySnapshot.empty) {
-            listeContainer.innerHTML += "<p>Aucune église enregistrée pour l’instant.</p>";
-        }
+        let found = false;
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            const div = document.createElement("div");
-            div.innerHTML = `<strong>${data.nom}</strong><br>${data.adresse}`;
-            listeContainer.appendChild(div);
+            if (data.type && data.type.toLowerCase() === "pentecotiste") {
+                found = true;
+                const div = document.createElement("div");
+                div.innerHTML = `<strong>${data.nom}</strong><br>${data.adresse}`;
+                listeContainer.appendChild(div);
+            }
         });
+
+        if (!found) {
+            listeContainer.innerHTML += "<p>Aucune église pentecôtiste enregistrée pour l’instant.</p>";
+        }
+
     } catch (error) {
         console.error("Erreur récupération églises :", error);
         const listeContainer = document.getElementById("liste-eglises");
@@ -52,3 +57,9 @@ async function fetchEglises() {
 
 // Charger les églises au démarrage
 fetchEglises();
+
+// Bouton de don volontaire
+document.getElementById("btn-don").addEventListener("click", () => {
+    // Remplace l'URL par ton compte PayPal / Stripe
+    window.open("https://www.paypal.com/donate/example", "_blank");
+});
