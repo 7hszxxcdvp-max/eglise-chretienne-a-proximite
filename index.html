@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Église Chrétienne à Proximité</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Église Chrétienne à Proximité</h1>
+    <p>Trouvez les églises pentecôtistes proches de chez vous — Bible & verset du jour.</p>
+  </header>
+
+  <main>
+    <section id="verset">
+      <h2>Verset du jour</h2>
+      <p id="verset-text">Chargement...</p>
+    </section>
+
+    <section id="actions">
+      <button id="btn-show-form">Je suis pasteur : inscrire mon église</button>
+      <button id="btn-don">Faire un don</button>
+    </section>
+
+    <section id="form-section" class="hidden">
+      <h2>Inscrire une église</h2>
+      <form id="eglise-form">
+        <label>Nom de l'église<input name="nom" required></label>
+        <label>Adresse<input name="adresse" required></label>
+        <label>Ville<input name="ville" required></label>
+        <label>Téléphone<input name="telephone"></label>
+        <label>Site web (optionnel)<input name="site_web"></label>
+        <label>Dénomination
+          <select name="denomination" required>
+            <option value="">-- choisir --</option>
+            <option value="pentecotiste">Pentecôtiste</option>
+            <option value="autre">Autre (non affiché)</option>
+          </select>
+        </label>
+        <label>Latitude (optionnel)<input name="lat" placeholder="48.8566"></label>
+        <label>Longitude (optionnel)<input name="lng" placeholder="2.3522"></label>
+        <button type="submit">Envoyer</button>
+        <button id="btn-cancel" type="button">Annuler</button>
+      </form>
+      <p class="note">Seules les églises dont la dénomination est <strong>pentecotiste</strong> seront affichées.</p>
+    </section>
+
+    <section id="eglises-list">
+      <h2>Églises pentecôtistes</h2>
+      <div id="list-container">Chargement...</div>
+    </section>
+
+    <section id="monetisation">
+      <h2>Soutenir l'application</h2>
+      <div id="don-box">
+        <p>Vos dons permettent de maintenir l'application et l'hébergement.</p>
+        <a id="paypal-link" href="#" target="_blank">Don via PayPal</a>
+      </div>
+      <div id="ads-box">
+        <p>Emplacement publicitaire (à activer via Google AdSense ou autre)</p>
+        <div class="ad-placeholder">Annonce</div>
+      </div>
+      <div id="partenariat">
+        <p>Partenariat / Librairie / Événement ? Contact : <a href="mailto:uhlmann.kevin@icloud.com">uhlmann.kevin@icloud.com</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Kevin Uhlmann</p>
+  </footer>
+
+  <script type="module" src="src/script.js"></script>
+</body>
+</html>
