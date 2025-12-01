@@ -1,15 +1,17 @@
+```javascript
 // Import Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 // Config Firebase
 const firebaseConfig = {
-  apiKey: "TON_API_KEY",
-  authDomain: "TON_PROJECT_ID.firebaseapp.com",
-  projectId: "TON_PROJECT_ID",
-  storageBucket: "TON_PROJECT_ID.appspot.com",
-  messagingSenderId: "TON_SENDER_ID",
-  appId: "TON_APP_ID"
+  apiKey: "AIzaSyCKWA4VFRD4uVk6oxePh-3T0d3Vc54jH2A",
+  authDomain: "eglise-chretienne-a-proximite.firebaseapp.com",
+  projectId: "eglise-chretienne-a-proximite",
+  storageBucket: "eglise-chretienne-a-proximite.appspot.com",
+  messagingSenderId: "462602369790",
+  appId: "1:462602369790:web:14bf1441154bdb6c6683af",
+  measurementId: "G-87XCNS974K"
 };
 
 // Initialiser Firebase
@@ -31,7 +33,8 @@ form.addEventListener("submit", async (e) => {
   const sousDenomination = document.getElementById("sousDenomination").value;
 
   try {
-    const collectionName = "churches"; // tout est ajouté dans "churches"
+    const collectionName = denomination === "Pentecôtiste" ? "churches" : "manualRequests";
+
     await addDoc(collection(db, collectionName), {
       nom,
       adresse,
@@ -45,7 +48,7 @@ form.addEventListener("submit", async (e) => {
 
     message.textContent = "Église ajoutée avec succès !";
     form.reset();
-    afficherEglises();
+    afficherEglises(); // Met à jour la liste automatiquement
   } catch (error) {
     console.error("Erreur ajout église :", error);
     message.textContent = "Erreur lors de l'ajout de l'église.";
@@ -62,16 +65,15 @@ async function afficherEglises() {
   eglisesList.innerHTML = "";
   snapshot.forEach(doc => {
     const data = doc.data();
-    if(data.valide){
-      const li = document.createElement("li");
-      li.textContent = `${data.nom} - ${data.adresse}`;
-      eglisesList.appendChild(li);
-    }
+    const li = document.createElement("li");
+    li.textContent = `${data.nom} - ${data.adresse}`;
+    eglisesList.appendChild(li);
   });
 }
 
-// Verset du jour (exemple simple)
-document.getElementById("verse").textContent = "Jean 3:16 - Car Dieu a tant aimé le monde...";
-
-// Affiche au chargement
+// Initialiser l'affichage
 afficherEglises();
+
+// Verset du jour (simple exemple)
+document.getElementById("verse").textContent = "Jean 3:16 - Car Dieu a tant aimé le monde...";
+```
