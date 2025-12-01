@@ -1,77 +1,53 @@
-// Import Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Église Chrétienne à Proximité</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Église Chrétienne à Proximité</h1>
+        <p>Trouvez les églises pentecôtistes proches de chez vous</p>
+    </header>
 
-// Config Firebase
-const firebaseConfig = {
-  apiKey: "TON_API_KEY",
-  authDomain: "TON_PROJECT_ID.firebaseapp.com",
-  projectId: "TON_PROJECT_ID",
-  storageBucket: "TON_PROJECT_ID.appspot.com",
-  messagingSenderId: "TON_SENDER_ID",
-  appId: "TON_APP_ID"
-};
+    <main>
+        <section id="verse-du-jour">
+            <h2>Verset du jour</h2>
+            <p id="verse">Chargement...</p>
+        </section>
 
-// Initialiser Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        <section id="form-eglise">
+            <h2>Ajouter votre église</h2>
+            <form id="eglise-form">
+                <input type="text" id="nom" placeholder="Nom de l'église" required><br>
+                <input type="text" id="adresse" placeholder="Adresse" required><br>
+                <input type="text" id="telephone" placeholder="Téléphone" required><br>
+                <input type="email" id="email" placeholder="Email" required><br>
+                <select id="denomination" required>
+                    <option value="Pentecôtiste">Pentecôtiste</option>
+                    <option value="Baptiste">Baptiste</option>
+                    <option value="Méthodiste">Méthodiste</option>
+                    <option value="Autre">Autre évangélique</option>
+                </select><br>
+                <input type="text" id="sousDenomination" placeholder="Sous-dénomination"><br>
+                <button type="submit">Ajouter l'église</button>
+            </form>
+            <p id="message"></p>
+        </section>
 
-// Formulaire d'ajout d'église
-const form = document.getElementById("eglise-form");
-const message = document.getElementById("message");
+        <section id="liste-eglises">
+            <h2>Églises pentecôtistes validées</h2>
+            <ul id="eglises-list"></ul>
+        </section>
+    </main>
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+    <footer>
+        <p>&copy; 2025 Kevin Uhlmann</p>
+    </footer>
 
-  const nom = document.getElementById("nom").value;
-  const adresse = document.getElementById("adresse").value;
-  const telephone = document.getElementById("telephone").value;
-  const email = document.getElementById("email").value;
-  const denomination = document.getElementById("denomination").value;
-  const sousDenomination = document.getElementById("sousDenomination").value;
-
-  try {
-    const collectionName = "churches"; // tout est ajouté dans "churches"
-    await addDoc(collection(db, collectionName), {
-      nom,
-      adresse,
-      telephone,
-      email,
-      denomination,
-      sousDenomination,
-      dateCreation: serverTimestamp(),
-      valide: denomination === "Pentecôtiste" ? true : false
-    });
-
-    message.textContent = "Église ajoutée avec succès !";
-    form.reset();
-    afficherEglises();
-  } catch (error) {
-    console.error("Erreur ajout église :", error);
-    message.textContent = "Erreur lors de l'ajout de l'église.";
-  }
-});
-
-// Affichage des églises pentecôtistes validées
-const eglisesList = document.getElementById("eglises-list");
-
-async function afficherEglises() {
-  const q = query(collection(db, "churches"));
-  const snapshot = await getDocs(q);
-
-  eglisesList.innerHTML = "";
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if(data.valide){
-      const li = document.createElement("li");
-      li.textContent = `${data.nom} - ${data.adresse}`;
-      eglisesList.appendChild(li);
-    }
-  });
-}
-
-// Verset du jour (exemple simple)
-document.getElementById("verse").textContent = "Jean 3:16 - Car Dieu a tant aimé le monde...";
-
-// Affiche au chargement
-afficherEglises();
+    <!-- Lien vers ton script dans src -->
+    <script type="module" src="src/app.js"></script>
+</body>
+</html>
