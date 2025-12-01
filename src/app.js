@@ -4,13 +4,12 @@ import { getFirestore, collection, addDoc, getDocs, query, serverTimestamp } fro
 
 // Config Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCKWA4VFRD4uVk6oxePh-3T0d3Vc54jH2A",
-  authDomain: "eglise-chretienne-a-proximite.firebaseapp.com",
-  projectId: "eglise-chretienne-a-proximite",
-  storageBucket: "eglise-chretienne-a-proximite.appspot.com",
-  messagingSenderId: "462602369790",
-  appId: "1:462602369790:web:14bf1441154bdb6c6683af",
-  measurementId: "G-87XCNS974K"
+  apiKey: "TON_API_KEY",
+  authDomain: "TON_PROJECT_ID.firebaseapp.com",
+  projectId: "TON_PROJECT_ID",
+  storageBucket: "TON_PROJECT_ID.appspot.com",
+  messagingSenderId: "TON_SENDER_ID",
+  appId: "TON_APP_ID"
 };
 
 // Initialiser Firebase
@@ -32,9 +31,7 @@ form.addEventListener("submit", async (e) => {
   const sousDenomination = document.getElementById("sousDenomination").value;
 
   try {
-    // Choisir la collection selon la dénomination
-    const collectionName = denomination === "Pentecôtiste" ? "churches" : "manualRequests";
-
+    const collectionName = "churches"; // tout est ajouté dans "churches"
     await addDoc(collection(db, collectionName), {
       nom,
       adresse,
@@ -48,12 +45,7 @@ form.addEventListener("submit", async (e) => {
 
     message.textContent = "Église ajoutée avec succès !";
     form.reset();
-
-    // Rafraîchir la liste si Pentecôtiste
-    if (denomination === "Pentecôtiste") {
-      afficherEglises();
-    }
-
+    afficherEglises();
   } catch (error) {
     console.error("Erreur ajout église :", error);
     message.textContent = "Erreur lors de l'ajout de l'église.";
@@ -64,25 +56,22 @@ form.addEventListener("submit", async (e) => {
 const eglisesList = document.getElementById("eglises-list");
 
 async function afficherEglises() {
-  try {
-    const q = query(collection(db, "churches"));
-    const snapshot = await getDocs(q);
+  const q = query(collection(db, "churches"));
+  const snapshot = await getDocs(q);
 
-    eglisesList.innerHTML = "";
-    snapshot.forEach(doc => {
-      const data = doc.data();
+  eglisesList.innerHTML = "";
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if(data.valide){
       const li = document.createElement("li");
-      li.textContent = `${data.nom} - ${data.adresse} - ${data.telephone}`;
+      li.textContent = `${data.nom} - ${data.adresse}`;
       eglisesList.appendChild(li);
-    });
-  } catch (error) {
-    console.error("Erreur affichage églises :", error);
-    eglisesList.innerHTML = "<li>Impossible de charger les églises.</li>";
-  }
+    }
+  });
 }
 
-// Charger la liste au démarrage
-afficherEglises();
-
-// Verset du jour (exemple)
+// Verset du jour (exemple simple)
 document.getElementById("verse").textContent = "Jean 3:16 - Car Dieu a tant aimé le monde...";
+
+// Affiche au chargement
+afficherEglises();
