@@ -4,7 +4,7 @@ import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestam
 
 // Config Firebase (remplace par tes infos)
 const firebaseConfig = {
-  apiKey: "TA_API_KEY",
+  apiKey: "TA_API_KEY","AIzaSyCKWA4VFRD4uVk6oxePh-3T0d3Vc54jH2A"
   authDomain: "eglise-chretienne-a-proximite.firebaseapp.com",
   projectId: "eglise-chretienne-a-proximite",
   storageBucket: "eglise-chretienne-a-proximite.appspot.com",
